@@ -1,0 +1,237 @@
+\documentclass[12pt,fleqn]{article}
+%\usepackage {psfig,epsfig} % para incluir figuras em PostScript
+\usepackage{amsfonts,amsthm,amsopn,amssymb,latexsym}
+\usepackage{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{geometry}
+\usepackage[latin1]{inputenc}
+\usepackage[intlimits]{amsmath}
+%alguns macros
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\Rn}{{\ensuremath{\mathbb{R}}}^{n}}
+\newcommand{\Rm}{{\ensuremath{\mathbb{R}}}^{m}}
+\newcommand{\Rmn}{{\ensuremath{\mathbb{R}}}^{{m}\times{n}}}
+\newcommand{\contcaption}[1]{\vspace*{-0.6\baselineskip}\begin{center}#1\end{center}\vspace*{-0.6\baselineskip}}
+%=======================================================================
+% Dimensões da página
+\usepackage{a4}                       % tamanho da página
+\setlength{\textwidth}{16.0cm}        % largura do texto
+\setlength{\textheight}{9.0in}        % tamanho do texto (sem head, etc)
+\renewcommand{\baselinestretch}{1.15} % espaçamento entre linhas
+\addtolength{\topmargin}{-1cm}        % espaço entre o head e a margem
+\setlength{\oddsidemargin}{-0.1cm}    % espaço entre o texto e a margem
+       
+% Ser indulgente no preenchimento das linhas
+\sloppy
+ 
+
+\begin{document}
+
+
+\pagestyle {empty}
+
+% Páginas iniciais
+\include {capa}           % capa ilustrativa
+
+
+
+\pagestyle {empty}
+\abstract{ escrever o resumo do trabalho }
+
+\newpage
+
+\tableofcontents
+
+
+% Numeração em romanos para páginas iniciais (sumários, listas, etc)
+%\pagenumbering {roman}
+\pagestyle {plain}
+
+
+
+\setcounter{page}{0} \pagenumbering{arabic}
+
+
+
+
+
+
+  
+\setlength{\parindent}{0in}  %espaco entre paragrafo e margem 
+% Espaçamento entre parágrafos
+\parskip 5pt  
+
+\section{Introdução}
+
+%comando cria itens
+\begin{itemize}
+	\item introduzir o problema a ser estudado
+	\item apresentar trabalhos relacionados
+	\item apresentar motivação
+	\item apresentar objetivos
+	\item último parágrafo deve conter a organização do documento
+	\item novo item
+\end{itemize}
+
+
+
+\section{Exemplos de Equações}
+Nesta seção serão apresentados diferentes exemplos de equações.
+
+\subsection{Equações simples}
+
+\textbf{Sem numeração}
+\[\sum_{i=1}^{100}\frac{2^{i-1}}{4}\]
+
+
+	
+
+\textbf{Com numeração}
+\begin{equation}
+	\int_{0}^{100}\sqrt[4]{\frac{2n}{7}}
+\end{equation}
+
+\begin{equation}
+M^{-1}(AD^{-1}A^T)M^{-T}\bar{y} = M^{-1}(AD^{-1}(r_d -X^{-1}r_a) + r_p),
+\end{equation}
+
+
+\subsection{Equações com mais de uma linha}
+\begin{eqnarray}
+\label{pp} %faz um rótulo na equação. Será usado para referenciá-la.
+\min & c^Tx \\ \nonumber
+\mbox{s.a.} & Ax=b \\ \nonumber
+            & x \geq 0, \nonumber
+\end{eqnarray}
+onde $A \in \Rmn$, $b \in \Rm$ and $c \in \Rn$.
+Referenciando a equação ~(\ref{pp}) 
+
+\subsection{Sistema linear}
+
+\begin{equation}
+ \left[
+\begin{array}{ccc}
+ A & 0   & 0 \\
+ 0 & A^T & I\\
+ Z & 0   & X
+\end{array} \right]
+\left[
+\begin{array}{c}
+ x \\
+ y \\
+ z \\
+\end{array}
+\right]
+=
+\left[
+\begin{array}{c}
+ 1 \\
+ 2 \\
+ 3
+\end{array}
+\right]
+\label{eqpc0}
+\end{equation} 
+
+
+
+
+\[
+d_i=\left \{
+\begin{array}{cc}
+1 & \mbox{se } i=0 \\
+2 & \mbox{caso contrário}\\
+\end{array}
+\right \}
+\]
+
+
+
+
+%inicia uma nova página
+\clearpage
+
+\section{Tabelas}
+\label{sec:tab}
+
+
+\subsection{Tabela Simples}
+\begin{table}[htb]
+\begin{center}
+		\begin{tabular}{|c|c|c|}\hline
+		12  & 13 & 14 \\\hline
+		15  & 16 & 17 \\\hline
+		\end{tabular}
+\label{tab:Tabela1}
+\caption{Título da tabela}
+\end{center}
+\end{table}
+
+
+\subsection{Tabela mais elaborada}
+\begin{table}[htb]
+\begin{center}
+\begin{tabular}{|l|r|c|r|r|} \hline
+            & \multicolumn{2}{|c|}{{CCF preconditioner}} & \multicolumn{2}{|c|}{{Number of nonzeros}} \\ \cline{2-5}
+{Problem}   & \multicolumn{1}{|c|}{$\eta$}  & \multicolumn{1}{|c|}{$ \frac{n(AD^{-1}A^T)}{nrow}$} & \multicolumn{1}{|c|}{FCC} & \multicolumn{1}{|c|}{Cholesky}  \\ \hline \hline
+ELS-19    &  -11 & 31 &  87750  & 3763686  \\\hline 
+SCR20     &  -12 & 31 &  103179 & 2591752  \\\hline
+NUG15     &  -12 & 32 &  54786  & 6350444 \\\hline
+PDS-20    &   15 & 5  &  625519 & 7123636\\\hline
+\end{tabular}
+\caption{Título da Tabela.}   
+\label{tabn}
+\end{center}
+\end{table}
+
+Referenciando a tabela~\ref{tabn}. 
+
+
+
+
+
+\section{Edição}
+
+Comando para preservar a formatação do texto.
+\begin{verbatim}
+#include <iostream>         // < > is used for standard libraries.
+void main(void)             // ''main'' method always called first.
+{
+ cout << ''This is a message.'';
+                            // Send to output stream.
+}
+\end{verbatim}
+
+\section{Inserir figuras}
+
+\begin{figure}[htb]
+	\centering
+		\includegraphics[height=14cm]{figura}
+	\label{fig:pdsmodel}
+\end{figure}
+
+%\clearpage %começa nova página
+
+
+Para citar referências bibliográficas~\cite{Adler89}, \cite{Carmo05}.
+
+
+
+\section{Conclusões} 
+Apresentar as conclusões finais.
+
+
+{\bf{Acknowledgments}} Agradecimentos aos colaboradores 
+
+%Incluindo referências bibliográficas
+\bibliographystyle{plain} %define o estilo         
+\bibliography{bibliografia} %busca o arquivo
+
+%inserindo anexos
+\appendix
+
+\section{Anexo I}
+O anexo bla .....
+
+\end{document} %finaliza o documento
