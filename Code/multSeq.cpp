@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     }
 
     int i,j,k,mul=5;
-    int col_sum = N * (N-1) / 2;
+    long col_sum = N * (N-1) / 2;
 	
 			
 		a = (long **)malloc (N * sizeof(long *));
