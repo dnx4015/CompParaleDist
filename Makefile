@@ -3,6 +3,6 @@ CFLAGS=-fopenmp
 FILE?=mult
 
 %:
-	$(CC) $(CFLAGS) -o $* $*.cpp
+	$(CC) $(CFLAGS) -o $*.out $*.cpp
 	
 
