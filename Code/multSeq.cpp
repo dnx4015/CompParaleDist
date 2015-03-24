@@ -59,6 +59,6 @@ int main(int argc, char **argv) {
     printf ("Test finished.\n");         
 
 	end = omp_get_wtime();
-	printf("Sequential time: %lf.\n", end-start);
+	printf("Time: %lf.\n", end-start);
 }
 
