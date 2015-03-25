@@ -18,7 +18,7 @@
 \usepackage{a4}                       % tamanho da página
 \setlength{\textwidth}{16.0cm}        % largura do texto
 \setlength{\textheight}{9.0in}        % tamanho do texto (sem head, etc)
-\renewcommand{\baselinestretch}{1.15} % espaçamento entre linhas
+\renewcommand{\baselinestretch}{1.15} % espaçamento entrelinhas
 \addtolength{\topmargin}{-1cm}        % espaço entre o head e a margem
 \setlength{\oddsidemargin}{-0.1cm}    % espaço entre o texto e a margem
        
@@ -37,8 +37,10 @@
 
 
 \pagestyle {empty}
-\abstract{ escrever o resumo do trabalho }
-
+\abstract{Nesse Exercício Programa o objetivo foi explorar a computação paralela com memoria compartilhada, para isso foi usado o padrão openMP.
+A primeira parte do trabalho explora o cuidado que deve-se ter no momento de realizar o desenvolvimento de programas usando as diretivas do openMP. É muito simples cometer erros quando ainda se está pensando de maneira sequencial, ao assumir algum comportamento ou quando não se conhece bem o comportamento padrão das diretivas usadas.
+A segunda parte do EP procura avaliar as melhoras (ou falta delas) no tempo de execução de um programa alvo, mult.c, que realiza a multiplicação de 2 matrizes. Para avaliar o desempenho da versão sequencial versus a paralela uma serie de experimentos foram realizados. Alguns deles involucraram a alterção do programa para criar distintas zonas paralelas e também a execução deles usando diferentes numeros de threads.
+A continuação presentamos os experimentos, resultados e conclusões.}
 \newpage
 
 \tableofcontents
@@ -57,21 +59,22 @@
 
 
 
-  
-\setlength{\parindent}{0in}  %espaco entre paragrafo e margem 
+ 
+\setlength{\parindent}{0in}  %espaco entre paragrafo e margem
 % Espaçamento entre parágrafos
 \parskip 5pt  
+
+\clearpage
 
 \section{Introdução}
 
 %comando cria itens
 \begin{itemize}
-	\item introduzir o problema a ser estudado
-	\item apresentar trabalhos relacionados
-	\item apresentar motivação
-	\item apresentar objetivos
-	\item último parágrafo deve conter a organização do documento
-	\item novo item
+    \item introduzir o problema a ser estudado
+    \item apresentar trabalhos relacionados
+    \item apresentar motivação
+    \item apresentar objetivos
+    \item último parágrafo deve conter a organização do documento
 \end{itemize}
 
 
@@ -85,11 +88,11 @@ Nesta seção serão apresentados diferentes exemplos de equações.
 \[\sum_{i=1}^{100}\frac{2^{i-1}}{4}\]
 
 
-	
+    
 
 \textbf{Com numeração}
 \begin{equation}
-	\int_{0}^{100}\sqrt[4]{\frac{2n}{7}}
+    \int_{0}^{100}\sqrt[4]{\frac{2n}{7}}
 \end{equation}
 
 \begin{equation}
@@ -105,7 +108,7 @@ M^{-1}(AD^{-1}A^T)M^{-T}\bar{y} = M^{-1}(AD^{-1}(r_d -X^{-1}r_a) + r_p),
             & x \geq 0, \nonumber
 \end{eqnarray}
 onde $A \in \Rmn$, $b \in \Rm$ and $c \in \Rn$.
-Referenciando a equação (~\ref{pp}) 
+Referenciando a equação (~\ref{pp})
 
 \subsection{Sistema linear}
 
@@ -132,7 +135,7 @@ Referenciando a equação (~\ref{pp})
 \end{array}
 \right]
 \label{eqpc0}
-\end{equation} 
+\end{equation}
 
 
 
@@ -159,10 +162,10 @@ d_i=\left \{
 \subsection{Tabela Simples}
 \begin{table}[htb]
 \begin{center}
-		\begin{tabular}{|c|c|c|}\hline
-		12  & 13 & 14 \\\hline
-		15  & 16 & 17 \\\hline
-		\end{tabular}
+        \begin{tabular}{|c|c|c|}\hline
+        12  & 13 & 14 \\\hline
+        15  & 16 & 17 \\\hline
+        \end{tabular}
 \label{tab:Tabela1}
 \caption{Título da tabela}
 \end{center}
@@ -175,7 +178,7 @@ d_i=\left \{
 \begin{tabular}{|l|r|c|r|r|} \hline
             & \multicolumn{2}{|c|}{{CCF preconditioner}} & \multicolumn{2}{|c|}{{Number of nonzeros}} \\ \cline{2-5}
 {Problem}   & \multicolumn{1}{|c|}{$\eta$}  & \multicolumn{1}{|c|}{$ \frac{n(AD^{-1}A^T)}{nrow}$} & \multicolumn{1}{|c|}{FCC} & \multicolumn{1}{|c|}{Cholesky}  \\ \hline \hline
-ELS-19    &  -11 & 31 &  87750  & 3763686  \\\hline 
+ELS-19    &  -11 & 31 &  87750  & 3763686  \\\hline
 SCR20     &  -12 & 31 &  103179 & 2591752  \\\hline
 NUG15     &  -12 & 32 &  54786  & 6350444 \\\hline
 PDS-20    &   15 & 5  &  625519 & 7123636\\\hline
@@ -185,7 +188,7 @@ PDS-20    &   15 & 5  &  625519 & 7123636\\\hline
 \end{center}
 \end{table}
 
-Referenciando a tabela~\ref{tabn}. 
+Referenciando a tabela~\ref{tabn}.
 
 
 
@@ -208,9 +211,9 @@ void main(void)             // ''main'' method always called first.
 \section{Inserir figuras}
 
 \begin{figure}[htb]
-	\centering
-		\includegraphics[height=14cm]{Images/figura}
-	\label{fig:pdsmodel}
+    \centering
+        \includegraphics[height=14cm]{Images/figura}
+    \label{fig:pdsmodel}
 \end{figure}
 
 
@@ -219,11 +222,11 @@ Para citar referências bibliográficas ~\cite{Adler89}, ~\cite{Carmo02}.
 
 
 
-\section{Conclusões} 
+\section{Conclusões}
 Apresentar as conclusões finais.
 
 
-{\bf{Acknowledgments}} Agradecimentos aos colaboradores 
+{\bf{Acknowledgments}} Agradecimentos aos colaboradores
 
 %Incluindo referências bibliográficas
 \bibliographystyle{plain} %define o estilo         
@@ -236,3 +239,6 @@ Apresentar as conclusões finais.
 O anexo bla .....
 
 \end{document} %finaliza o documento
+
+
+
