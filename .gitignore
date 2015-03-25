@@ -31,3 +31,10 @@
 *.aux
 *.toc
 *.log
+
+#gedit temps
+*~
+
+#vimp temps
+*.swp
+*.swo
