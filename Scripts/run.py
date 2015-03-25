@@ -46,13 +46,22 @@ def get_mean(target, threads):
 	return sum / float(RUN_TIMES)
 
 def main(argv):
-	target, threads = get_params(argv)
-	target = target if target != "" else "../Code/mult"
+	targets, threads = get_params(argv)
+	targets = targets if targets != "" else \
+	("../Code/multSeq.cpp", "../Code/multParalleli.cpp", \
+	"../Code/multParallelj.cpp", ".../Code/multParallelk.cpp")
 	threads = (threads) if threads != "" else \
 	("1", "2", "3", "4", "8", "16")
-	for i, thread in enumerate(threads):
-		print "Threads = "+thread
-		print "Avg Time = "+str(get_mean(target, thread))
+	with open("../Results/experiments.txt", "w") as f:
+		for target in targets:
+			f.write(target[8:-4]+"\n")
+			t_threads = "1" if target[12:-4] == "Seq" else threads
+			for thread in t_threads:
+				f.write("# threads: "str(thread)+", avg time: "\
+				str(get_mean(target, thread))+"\n")
+
+	
+
 
 if __name__ == "__main__":
 	main(sys.argv[1:])
