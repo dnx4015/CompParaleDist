@@ -8,7 +8,10 @@ def get_params(argv):
 		opts, args = getopt.getopt(argv, "hf:t:", \
 		["filename=", "nthreads="])
 	except getopt.GetoptError:
-		print  "run.py -f <filename> -t <numthreads>"
+		print  "To run all experimets just execute:\n\
+		python run.py\n\
+		To run an exact file or number of threads execute:\n\
+		python run.py -f <filename> -t <numthreads>"
 		sys.exit(2)
 	for opt, arg in opts:
 		if opt == "-h":
@@ -48,8 +51,8 @@ def get_mean(target, threads):
 def main(argv):
 	targets, threads = get_params(argv)
 	targets = targets if targets != "" else \
-	("../Code/multSeq.cpp", "../Code/multParalleli.cpp", \
-	"../Code/multParallelj.cpp", ".../Code/multParallelk.cpp")
+	("../Code/multSeq", "../Code/multParalleli", \
+	"../Code/multParallelj", ".../Code/multParallelk")
 	threads = (threads) if threads != "" else \
 	("1", "2", "3", "4", "8", "16")
 	with open("../Results/experiments.txt", "w") as f:
@@ -57,8 +60,8 @@ def main(argv):
 			f.write(target[8:-4]+"\n")
 			t_threads = "1" if target[12:-4] == "Seq" else threads
 			for thread in t_threads:
-				f.write("# threads: "str(thread)+", avg time: "\
-				str(get_mean(target, thread))+"\n")
+				f.write("# threads: "+str(thread)+", avg time: "\
+				+str(get_mean(target, thread))+"\n")
 
 	
 
