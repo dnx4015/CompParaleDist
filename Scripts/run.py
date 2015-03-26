@@ -52,13 +52,13 @@ def main(argv):
 	targets, threads = get_params(argv)
 	targets = targets if targets != "" else \
 	("../Code/multSeq", "../Code/multParalleli", \
-	"../Code/multParallelj", ".../Code/multParallelk")
+	"../Code/multParallelj", "../Code/multParallelk")
 	threads = (threads) if threads != "" else \
 	("1", "2", "3", "4", "8", "16")
 	with open("../Results/experiments.txt", "w") as f:
 		for target in targets:
-			f.write(target[8:-4]+"\n")
-			t_threads = "1" if target[12:-4] == "Seq" else threads
+			f.write(target[8:]+"\n")
+			t_threads = "1" if target[12:] == "Seq" else threads
 			for thread in t_threads:
 				f.write("# threads: "+str(thread)+", avg time: "\
 				+str(get_mean(target, thread))+"\n")

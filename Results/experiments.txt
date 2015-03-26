@@ -1,0 +1,23 @@
+multSeq
+# threads: 1, avg time: 2.063255
+multParalleli
+# threads: 1, avg time: 0.9521306
+# threads: 2, avg time: 1.25486815
+# threads: 3, avg time: 1.3030772
+# threads: 4, avg time: 1.47529005
+# threads: 8, avg time: 1.4512196
+# threads: 16, avg time: 1.2492797
+multParallelj
+# threads: 1, avg time: 1.305709
+# threads: 2, avg time: 0.9240185
+# threads: 3, avg time: 1.4867164
+# threads: 4, avg time: 1.382789
+# threads: 8, avg time: 1.4439919
+# threads: 16, avg time: 1.2486818
+multParallelk
+# threads: 1, avg time: 1.86398375
+# threads: 2, avg time: 1.24661
+# threads: 3, avg time: 1.0657462
+# threads: 4, avg time: 0.7578649
+# threads: 8, avg time: 1.0796793
+# threads: 16, avg time: 1.0332569
