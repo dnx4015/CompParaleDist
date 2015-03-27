@@ -1,6 +1,6 @@
 /*
 ID: diana.n1
-PROG: Mult
+PROG: MultSeqCodeChange
 LANG: C++
 */
 
@@ -67,7 +67,6 @@ int main(int argc, char **argv) {
 			c[i][j] = tmp;
 	  	}
 	}
-	transpose(N, b);
 
 	printf ("Multiplication finished.\n");         
 	

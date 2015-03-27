@@ -1,6 +1,6 @@
 /*
 ID: diana.n1
-PROG: Mult
+PROG: MultParallelkCodeChange
 LANG: C++
 */
 
@@ -10,6 +10,17 @@ LANG: C++
 #include <assert.h>
 #include <time.h>
 #include "omp.h"
+
+void transpose(int n, long ** m){
+	long tmp;
+	for (int i = 0; i < n; i++){
+		for (int j = i+1; j < n; j++){
+			tmp = m[i][j];
+			m[i][j] = m[j][i];
+			m[j][i] = tmp;
+		}
+	}	
+}
 
 int main(int argc, char **argv) {
 	double start, end; 
@@ -25,8 +36,7 @@ int main(int argc, char **argv) {
     }
 
     int i,j,k,mul=5;
-    long col_sum = N * (N-1) / 2;
-	long temp;
+    long col_sum = N * (N-1) / 2, tmp;
 	
 	a = (long **)malloc (N * sizeof(long *));
 	b = (long **)malloc (N * sizeof(long *));
@@ -38,7 +48,7 @@ int main(int argc, char **argv) {
 	  c[i] = (long *)malloc (N * sizeof(long));
 	}
 
-	#pragma omp parallel shared (a,b,c,nthreads, chunk, temp) private (i, j,k,tid)
+	#pragma omp parallel shared (a,b,c,nthreads, chunk, tmp) private (i, j,k,tid)
 	{
 		tid = omp_get_thread_num();
 		#pragma omp single
@@ -55,16 +65,19 @@ int main(int argc, char **argv) {
 		#pragma omp single
 			printf ("Matrix generation finished.\n");         
 		
+		#pragma omp single
+			transpose(N, b);
+
 		for (i=0; i<N; i++){
 			for (j=0; j<N; j++){
 				#pragma omp single
-					temp = 0;
-				#pragma omp for schedule(static, chunk) reduction (+:temp) 
+					tmp = 0;
+				#pragma omp for schedule(static, chunk) reduction (+:tmp) 
 					for (k=0; k<N; k++){
-						temp += a[i][k] * b[k][j];
+						tmp += a[i][k] * b[j][k];
 					}
 				#pragma omp single
-					c[i][j] = temp;
+					c[i][j] = tmp;
 		  	}
 		}
 		
