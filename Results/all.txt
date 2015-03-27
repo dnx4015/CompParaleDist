@@ -1,0 +1,60 @@
+../Code/Directives+CodeChanges/multSeq
+# threads: 1, avg time: 0.561712
+../Code/Directives+CodeChanges/multParallelj
+# threads: 1, avg time: 0.8604788
+# threads: 2, avg time: 0.85212165
+# threads: 3, avg time: 1.19657475
+# threads: 4, avg time: 1.91011105
+# threads: 8, avg time: 1.7487214
+# threads: 16, avg time: 1.2759245
+../Code/Directives+CodeChanges/mult
+# threads: 1, avg time: 1.12600235
+# threads: 2, avg time: 1.1173499
+# threads: 3, avg time: 1.13171015
+# threads: 4, avg time: 1.2025989
+# threads: 8, avg time: 1.231776
+# threads: 16, avg time: 1.10321665
+../Code/Directives+CodeChanges/multParalleli
+# threads: 1, avg time: 1.1224738
+# threads: 2, avg time: 1.1404634
+# threads: 3, avg time: 1.1193242
+# threads: 4, avg time: 1.11933135
+# threads: 8, avg time: 1.14450505
+# threads: 16, avg time: 1.14045615
+../Code/Directives+CodeChanges/multParallelk
+# threads: 1, avg time: 1.1561779
+# threads: 2, avg time: 1.1246267
+# threads: 3, avg time: 1.57864525
+# threads: 4, avg time: 1.37082405
+# threads: 8, avg time: 2.7475134
+# threads: 16, avg time: 1.161433
+../Code/OnlyDirectives/multSeq
+# threads: 1, avg time: 2.8489872
+../Code/OnlyDirectives/multParallelj
+# threads: 1, avg time: 1.84930985
+# threads: 2, avg time: 1.577899
+# threads: 3, avg time: 1.90924995
+# threads: 4, avg time: 1.5444092
+# threads: 8, avg time: 1.58278625
+# threads: 16, avg time: 1.64879975
+../Code/OnlyDirectives/mult
+# threads: 1, avg time: 1.21301595
+# threads: 2, avg time: 1.3163038
+# threads: 3, avg time: 1.36365435
+# threads: 4, avg time: 1.3130626
+# threads: 8, avg time: 1.31355695
+# threads: 16, avg time: 1.27160075
+../Code/OnlyDirectives/multParalleli
+# threads: 1, avg time: 1.3871236
+# threads: 2, avg time: 1.6335495
+# threads: 3, avg time: 1.51587015
+# threads: 4, avg time: 1.48271955
+# threads: 8, avg time: 1.43278355
+# threads: 16, avg time: 1.4454284
+../Code/OnlyDirectives/multParallelk
+# threads: 1, avg time: 3.2289193
+# threads: 2, avg time: 2.0461584
+# threads: 3, avg time: 4.10723815
+# threads: 4, avg time: 1.51623275
+# threads: 8, avg time: 1.25364895
+# threads: 16, avg time: 1.0441763
