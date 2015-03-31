@@ -67,112 +67,66 @@ A continuação presentamos os experimentos, resultados e conclusões.}
 \clearpage
 
 \section{Introdução}
+A computação paralela consiste em executar um conjunto de cálculos de maneira  simultanea ~\cite{Gottlieb89}. A meta de este tipo de computação é diminuir o tempo de execução que exigem algumas aplicações, e.g. aquelas com fortes requerimentos de computo. Atualmente, existem computadores com múltiplos cores; além de isso  também contam com tecnologias como hyper-threading, o que gera que o sistema operativo assuma que conta com uma maior quantidade de recursos de computo. Os recursos, por tanto, estão prontos para ser usados. Porém, para realmente obter uma melhoria no rendimento não é suficiente executar as aplicações em uma máquina multi-core, é necessário que elas troquem seus algoritmos sequências por uma versão paralela. De outra maneira, não estaria-se fazendo uso do processamento paralelo e seus beneficios.
 
-%comando cria itens
+O grande problema é que a troca de algoritmos sequências por paralelos não é um trabalho simples. Existem diversos problemas na geração de códigos paralelos de bom rendimento, alguns deles são ~\cite{Matloff14}:
 \begin{itemize}
-    \item introduzir o problema a ser estudado
-    \item apresentar trabalhos relacionados
-    \item apresentar motivação
-    \item apresentar objetivos
-    \item último parágrafo deve conter a organização do documento
+    \item Gargalos de comunicação. Debe ter-se em consideração a quantidade processadores que serão utilizados na execução e o overhead produto da comunicação entre estes processadores e a memoria~\cite{Gebali11}. Isto é importante pois pode acontecer que um programa em versão paralela tome mais tempo na execução do que na versão sequencial. O que se debe a que a memoria só pode ser acessada por um thread em qualquer momento e o custo de manter as caches de cada processador coerente também gera um overhead.
+    \item Balanceamento de carga. Ao fazer uma divisão de trabalho o ideal é que cada uma das partes tenha uma carga igual. Se uma delas tem mais trabalho do que as outras então no final o problema volta a ser sequencial pois a maioria termina com sua carga e umas poucas continuam com o resto do trabalho.
+    \item Problemas na construção do código. Os desenvolvedores estão acostumados a pensar em forma sequencial e por tanto é muito fácil cometer erros de concorrência. As operações simples, como por exemplo a assinação de valores a uma variável, causam resultados inesperados na versão paralela. Isto é devido as condições de corrida, i.e. quando o programa se desenvolve em um ordem diferente ao que o programador planeio.
 \end{itemize}
 
+Para evitar os erros produzidos por o pouco cuidado do desenvolvedor e para maximizar o paralelismo dos algoritmos que são sequências existem conjuntos de diretivas que criam um código paralelo executável. OpenMP é um conjunto de diretivas para o compilar, rutinas de libraria e variáveis de entorno que podem ser usadas para a geração de paralelismo em códigos Fortran e C/C++ ~\cite{OpenMP13}. O objetivo é garantir o correto funcionamento dos programas e obter os beneficios do paralelismo. 
+
+Neste trabalho exploramos os problemas persistentes no uso das diretivas do OpenMP. Tanto no desenvolvimento de código erróneo, como na geração de overhead pela geração de áreas paralelas ineficientes. Para isso desenvolvemos experimentos para obter o tempo promedio na execução de códigos gerados a partir de distintas áreas paralelas, em ambientes diferentes e com distintas quantidades de threads. 
 
 
-\section{Exemplos de Equações}
-Nesta seção serão apresentados diferentes exemplos de equações.
+\section{Exercício 1}
+\textbf{Escolher um código na internet que use as diretivas de compilação do openMP,
+esse código deve ser procurado nos respetivos tutoriais e manuais desse padrão de programação multiprocessamento. A ideia e encontrar erros nessas implementações fornecidas ou apresentadas nos tutoriais consultados. Apresente o código, aponte os problemas e descreva quais são as correções feitas para tirar o erro da aplicação.}
 
-\subsection{Equações simples}
+\subsection{Código com erro}
+Comando para preservar a formatação do texto.
+\begin{verbatim}
+#include <iostream>         // < > is used for standard libraries.
+void main(void)             // ''main'' method always called first.
+{
+ cout << ''This is a message.'';
+                            // Send to output stream.
+}
+\end{verbatim}
 
-\textbf{Sem numeração}
-\[\sum_{i=1}^{100}\frac{2^{i-1}}{4}\]
+\subsection{Problemas encontrados}
 
+\subsection{Correções}
+Comando para preservar a formatação do texto.
+\begin{verbatim}
+#include <iostream>         // < > is used for standard libraries.
+void main(void)             // ''main'' method always called first.
+{
+ cout << ''This is a message.'';
+                            // Send to output stream.
+}
+\end{verbatim}
 
-    
+\subsection{Conclusões}
 
-\textbf{Com numeração}
-\begin{equation}
-    \int_{0}^{100}\sqrt[4]{\frac{2n}{7}}
-\end{equation}
-
-\begin{equation}
-M^{-1}(AD^{-1}A^T)M^{-T}\bar{y} = M^{-1}(AD^{-1}(r_d -X^{-1}r_a) + r_p),
-\end{equation}
-
-
-\subsection{Equações com mais de uma linha}
-\begin{eqnarray}
-\label{pp} %faz um rótulo na equação. Será usado para referenciá-la.
-\min & c^Tx \\ \nonumber
-\mbox{s.a.} & Ax=b \\ \nonumber
-            & x \geq 0, \nonumber
-\end{eqnarray}
-onde $A \in \Rmn$, $b \in \Rm$ and $c \in \Rn$.
-Referenciando a equação (~\ref{pp})
-
-\subsection{Sistema linear}
-
-\begin{equation}
- \left[
-\begin{array}{ccc}
- A & 0   & 0 \\
- 0 & A^T & I\\
- Z & 0   & X
-\end{array} \right]
-\left[
-\begin{array}{c}
- x \\
- y \\
- z \\
-\end{array}
-\right]
-=
-\left[
-\begin{array}{c}
- 1 \\
- 2 \\
- 3
-\end{array}
-\right]
-\label{eqpc0}
-\end{equation}
-
-
-
-
-\[
-d_i=\left \{
-\begin{array}{cc}
-1 & \mbox{se } i=0 \\
-2 & \mbox{caso contrário}\\
-\end{array}
-\right \}
-\]
-
-
-
-
-%inicia uma nova página
 \clearpage
 
-\section{Tabelas}
+\section{Exercício 2}
 \label{sec:tab}
+\textbf{Modique o programa mult.c, que realiza a multiplicação de 2 matrizes. Modique este código para que ele realize a multiplicação utilizando as primitivas de paralelização de openMP. Compare o desempenho com 1, 2, 3 4, 8 e 16 threads.
+Tente realizar a paralelização no laço for das variáveis i, j e k, explicando no relatorio se o comportamento obtido está correto ou não. Apresente e descreva no relatorio grafos, tabelas e estatísticas dos tempos de execução.
+\begin{itemize}
+\item Compare o desempenho obtido, explicando por que melhorou ou piorou e compare também a execução do programa em sua versão sequencial.
+\item Um dos objetivos e verificar se algum overhead e inserido pelo ambiente de execução (runtime openMP) quando a versão paralela do programa em openMP executa apenas com uma (1) thread, comparando-se com a versão sequencial (mult.c).
+\item Esse programa deve ser executado em pelo menos dois processadores diferentes, para efeitos de encontrar os intervalos de confiança cada execução deve ser repetida pelo menos 10 vezes.
+\item Outras informacões que julgarem pertinentes ao contexto do trabalho podem ser adicionadas, e poderão ser somadas como pontos adicionais do EP.
+\end{itemize}
+}
+\subsection{Experimentos}
 
-
-\subsection{Tabela Simples}
-\begin{table}[htb]
-\begin{center}
-        \begin{tabular}{|c|c|c|}\hline
-        12  & 13 & 14 \\\hline
-        15  & 16 & 17 \\\hline
-        \end{tabular}
-\label{tab:Tabela1}
-\caption{Título da tabela}
-\end{center}
-\end{table}
-
-
-\subsection{Tabela mais elaborada}
+\subsection{Resultados}
 \begin{table}[htb]
 \begin{center}
 \begin{tabular}{|l|r|c|r|r|} \hline
@@ -190,12 +144,26 @@ PDS-20    &   15 & 5  &  625519 & 7123636\\\hline
 
 Referenciando a tabela~\ref{tabn}.
 
+\begin{figure}[htb]
+    \centering
+        \includegraphics[height=14cm]{Images/figura}
+    \label{fig:pdsmodel}
+\end{figure}
 
 
+\subsection{Conclusões}
 
+\clearpage 
+\section{Conclusões}
+Apresentar as conclusões finais.
 
-\section{Edição}
+\clearpage 
 
+\bibliographystyle{plain}  
+\bibliography{bibliografia.bib} 
+\appendix
+
+\section{Anexo I}
 Comando para preservar a formatação do texto.
 \begin{verbatim}
 #include <iostream>         // < > is used for standard libraries.
@@ -206,39 +174,8 @@ void main(void)             // ''main'' method always called first.
 }
 \end{verbatim}
 
-%\clearpage %começa nova página
+\end{document} 
 
-\section{Inserir figuras}
-
-\begin{figure}[htb]
-    \centering
-        \includegraphics[height=14cm]{Images/figura}
-    \label{fig:pdsmodel}
-\end{figure}
-
-
-
-Para citar referências bibliográficas ~\cite{Adler89}, ~\cite{Carmo02}.
-
-
-
-\section{Conclusões}
-Apresentar as conclusões finais.
-
-
-{\bf{Acknowledgments}} Agradecimentos aos colaboradores
-
-%Incluindo referências bibliográficas
-\bibliographystyle{plain} %define o estilo         
-\bibliography{bibliografia.bib} %busca o arquivo
-
-%inserindo anexos
-\appendix
-
-\section{Anexo I}
-O anexo bla .....
-
-\end{document} %finaliza o documento
 
 
 
