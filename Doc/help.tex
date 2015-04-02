@@ -1,45 +1,44 @@
-\documentclass[a4paper,12pt,fleqn]{article}
-%\usepackage {psfig,epsfig} % para incluir figuras em PostScript
-\usepackage{amsfonts,amsthm,amsopn,amssymb,latexsym}
-\usepackage{graphicx}
-\usepackage[T1]{fontenc}
-\usepackage[brazil]{babel}
-\usepackage{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage[intlimits]{amsmath}
-%alguns macros
-\newcommand{\R}{\ensuremath{\mathbb{R}}}
-\newcommand{\Rn}{{\ensuremath{\mathbb{R}}}^{n}}
-\newcommand{\Rm}{{\ensuremath{\mathbb{R}}}^{m}}
-\newcommand{\Rmn}{{\ensuremath{\mathbb{R}}}^{{m}\times{n}}}
-\newcommand{\contcaption}[1]{\vspace*{-0.6\baselineskip}\begin{center}#1\end{center}\vspace*{-0.6\baselineskip}}
-%=======================================================================
-% Dimensões da página
-\usepackage{a4}                       % tamanho da página
-\setlength{\textwidth}{16.0cm}        % largura do texto
-\setlength{\textheight}{9.0in}        % tamanho do texto (sem head, etc)
-\renewcommand{\baselinestretch}{1.15} % espaçamento entrelinhas
-\addtolength{\topmargin}{-1cm}        % espaço entre o head e a margem
-\setlength{\oddsidemargin}{-0.1cm}    % espaço entre o texto e a margem
-       
-% Ser indulgente no preenchimento das linhas
-\sloppy
+\documentclass[12pt,fleqn]{article} 
+%\usepackage {psfig,epsfig} % para incluir figuras em PostScript 
+\usepackage{amsfonts,amsthm,amsopn,amssymb,latexsym} 
+\usepackage{graphicx} 
+\usepackage[T1]{fontenc} 
+\usepackage[brazil]{babel} 
+\usepackage{geometry} 
+\usepackage[latin1]{inputenc} 
+\usepackage[intlimits]{amsmath} 
+%alguns macros 
+\newcommand{\R}{\ensuremath{\mathbb{R}}} 
+\newcommand{\Rn}{{\ensuremath{\mathbb{R}}}^{n}} 
+\newcommand{\Rm}{{\ensuremath{\mathbb{R}}}^{m}} 
+\newcommand{\Rmn}{{\ensuremath{\mathbb{R}}}^{{m}\times{n}}} 
+\newcommand{\contcaption}[1]{\vspace*{­0.6\baselineskip}\begin{center}#1\end{center}\vspace*{­0.6\baselineskip}} 
+%======================================================================= 
+% Dimensões da página 
+\usepackage{a4} 
+% tamanho da página 
+\setlength{\textwidth}{16.0cm} 
+% largura do texto 
+\setlength{\textheight}{9.0in} 
+% tamanho do texto (sem head, etc) 
+\renewcommand{\baselinestretch}{1.15} % espaçamento entrelinhas 
+\addtolength{\topmargin}{1cm}  % espaço entre o head e a margem 
+\setlength{\oddsidemargin}{0.1cm} %espaço entre o texto e a margem 
+
+% Ser indulgente no preenchimento das linhas 
+\sloppy 
+
+\begin{document} 
  
-
-\begin{document}
-
-
-\pagestyle {empty}
-
-\include {capa}
-
+\pagestyle {empty} 
+ 
+% Páginas iniciais 
+\include {capa} 
+% capa ilustrativa 
+ 
   
-\pagestyle {empty}
-\abstract{Nesse Exercício Programa o objetivo foi explorar a computação paralela com memoria compartilhada, para isso foi usado o padrão openMP.
-A primeira parte do trabalho explora o cuidado que deve-se ter no momento de realizar o desenvolvimento de programas usando as diretivas do openMP. É muito simples cometer erros quando ainda se está pensando de maneira sequencial, ao assumir algum comportamento ou quando não se conhece bem o comportamento padrão das diretivas usadas.
-A segunda parte do EP procura avaliar as melhoras (ou falta delas) no tempo de execução de um programa alvo, mult.c, que realiza a multiplicação de 2 matrizes. Para avaliar o desempenho da versão sequencial versus a paralela uma serie de experimentos foram realizados. Alguns deles involucraram a alterção do programa para criar distintas zonas paralelas e também a execução deles usando diferentes numeros de threads.
-A continuação presentamos os experimentos, resultados e conclusões.}
-
+\pagestyle {empty} 
+\abstract{Nesse Exercício Programa o objetivo foi explorar a computação paralela com memoria compartilhada, para isso foi usado o padrão openMP. A primeira parte do trabalho explora o cuidado que deve­se ter no momento de realizar o desenvolvimento de programas usando as diretivas do openMP. Cometer erros é muito simples, quando ainda se está pensando de maneira sequencial, ao assumir algum comportamento ou quando não se conhece bem o comportamento padrão das diretivas usadas. A segunda parte do EP procura avaliar as melhoras (ou falta delas) no tempo de execução de um programa alvo, mult.c, que realiza a multiplicação de 2 matrizes. Para avaliar o desempenho da versão sequencial versus a paralela uma serie de experimentos foram realizados. Alguns deles involucraram a alterção do programa para criar distintas zonas paralelas e também a execução deles usando diferentes numeros de threads. A continuação presentamos os experimentos, resultados e conclusoes.} 
 \newpage 
  
 \tableofcontents 
@@ -65,11 +64,11 @@ A continuação presentamos os experimentos, resultados e conclusões.}
  \clearpage 
  
 \section{Introdução} 
-A computação paralela consiste em executar um conjunto de cálculos de maneira simultanea ~\cite{Gottlieb89}. A meta de este tipo de computação é diminuir o tempo de execução que exigem algumas aplicaçoes, e.g. aquelas com fortes requerimentos de computo. Atualmente, existem computadores com múltiplos cores; além de isso também contam com tecnologias como hyper-threading, o que gera que o sistema operativo assuma que conta com uma maior quantidade de recursos de computo. Os recursos, por tanto, estão prontos para ser usados. Porém, para realmente obter uma melhoria no rendimento não é suficiente executar as aplicaçoes em uma máquina multicore, é necessário que elas troquem seus algoritmos sequências por uma versão paralela. De outra maneira, não estaria-se fazendo uso do processamento paralelo e seus beneficios.  
+A computação paralela consiste em executar um conjunto de cálculos de maneira simultanea ~\cite{Gottlieb89}. A meta de este tipo de computação é diminuir o tempo de execução que exigem algumas aplicaçoes, e.g. aquelas com fortes requerimentos de computo. Atualmente, existem computadores com múltiplos cores; além de isso também contam com tecnologias como hyper­threading, o que gera que o sistema operativo assuma que conta com uma maior quantidade de recursos de computo. Os recursos, por tanto, estão prontos para ser usados. Porém, para realmente obter uma melhoria no rendimento não é suficiente executar as aplicaçoes em uma máquina multi­core, é necessário que elas troquem seus algoritmos sequências por uma versão paralela. De outra maneira, não estaria­se fazendo uso do processamento paralelo e seus beneficios.  
 
 O grande problema é que a troca de algoritmos sequências por paralelos não é um trabalho simples. Existem diversos problemas na geração de códigos paralelos de bom rendimento, alguns deles são ~\cite{Matloff14}: 
 \begin{itemize} 
-\item Gargalos de comunicação. Debe ter-se em consideração a quantidade processadores que serão utilizados na execução e o overhead produto da comunicação entre estes processadores e a memoria~\cite{Gebali11}. Isto é importante pois pode acontecer que um programa em versão paralela tome mais tempo na execução do que na versão sequencial. O que se debe a que a memoria só pode ser acessada por um thread em qualquer momento e o custo de manter as caches de cada processador coerente também gera um overhead. 
+\item Gargalos de comunicação. Debe ter­se em consideração a quantidade processadores que serão utilizados na execução e o overhead produto da comunicação entre estes processadores e a memoria~\cite{Gebali11}. Isto é importante pois pode acontecer que um programa em versão paralela tome mais tempo na execução do que na versão sequencial. O que se debe a que a memoria só pode ser acessada por um thread em qualquer momento e o custo de manter as caches de cada processador coerente também gera um overhead. 
 \item Balanceamento de carga. Ao fazer uma divisão de trabalho o ideal é que cada uma das partes tenha uma carga igual. Se uma delas tem mais trabalho do que as outras então no final o problema volta a ser sequencial pois a maioria termina com sua carga e umas poucas continuam com o resto do trabalho. 
 \item Problemas na construção do código. Os desenvolvedores estão acostumados a pensar em forma sequencial e por tanto é muito fácil cometer erros de 
 concorrência. As operaçes simples, como por exemplo a assinação de valores a uma variável, causam resultados inesperados na versão paralela. Isto é devido as condiçes de corrida, i.e. quando o programa se desenvolve em um ordem diferente ao que o programador planeio. 
@@ -100,14 +99,14 @@ INSERT CODE HERE
 \clearpage 
  \section{Exercício 2} 
 \label{sec:tab} 
-\textbf{Modifique o programa mult.c, que realiza a multiplicação de 2 matrizes. Modifique este código para que ele realize a multiplicação utilizando as primitivas de paralelização de openMP. Compare o desempenho com 1, 2, 3 4, 8 e 16 threads. Tente realizar a paralelização no laço for das variáveis i, j e k, explicando no relatorio se o comportamento obtido está correto ou não. Apresente e descreva no relatorio grafos, tabelas e estatísticas dos tempos de execução.
+\textbf{Modique o programa mult.c, que realiza a multiplicação de 2 matrizes. Modique este código para que ele realize a multiplicação utilizando as primitivas de paralelização de openMP. Compare o desempenho com 1, 2, 3 4, 8 e 16 threads. Tente realizar a paralelização no laço for das variáveis i, j e k, explicando no relatorio se o comportamento obtido está correto ou não. Apresente e descreva no relatorio grafos, tabelas e estatísticas dos tempos de execução. 
 \begin{itemize} 
 \item Compare o desempenho obtido, explicando por que melhorou ou piorou e compare também a execução do programa em sua versão sequencial. 
-\item Um dos objetivos e verificar se algum overhead e inserido pelo ambiente de execução (runtime openMP) quando a versão paralela do programa em openMP executa apenas com uma (1) thread, comparando-se com a versão sequencial (mult.c). 
+\item Um dos objetivos e verificar se algum overhead e inserido pelo ambiente de execução (runtime openMP) quando a versão paralela do programa em openMP executa apenas com uma (1) thread, comparando­se com a versão sequencial (mult.c). 
 \item Esse programa deve ser executado em pelo menos dois processadores diferentes, para efeitos de encontrar os intervalos de confiança cada execução deve ser repetida pelo menos 10 vezes. 
-\item Outras informações que julgarem pertinentes ao contexto do trabalho podem ser adicionadas, e poderão ser somadas como pontos adicionais do EP.
-\end{itemize}
-}
+\item Outras informações que julgarem pertinentes ao contexto do trabalho podem ser adicionadas, e poderão ser somadas como pontos adicionais do EP. 
+\end{itemize} 
+} 
 \subsection{Experimentos} 
 Os experimentos realizados neste exercício podem ser separados em duas categorias: a primeira consta da adição de diretivas openMP para criar as zonas paralelas, a segunda consta tanto da adição das  diretivas como de câmbios no mesmo código para optimizar o uso dos recursos. Cada uma de estas categorias conta com 4 programas diferentes: o programa sequencial, o programa com paralelização no laço da variavel i, o programa com paralelização no laço da variavel j, e finalmente, o programa com paralelização no laço da variavel k. Cada programa, a excepçao do programa sequencial, foi executado com diferentes números de threads.  
  
@@ -116,46 +115,43 @@ Algumas das características dos experimentos são:
 \item Otimizaçao de código. Certas partes do programa original mult.c para melhorar o uso dos recursos. Estas otimizações foram dois: o uso de uma variavel temporal, $tmp$ para armazenar a suma das multiplicações e o uso de um metodo $transpose$ para obter um acesso sequencial da matriz $b$. 
 \item Zonas paralelas. Diferentes zonas foram criadas no laço das variáveis i, j e k.  
 \item Número de threads. O desempenho foi avaliado com 1, 2, 3, 4, 8 e 16 threads.   
-\item Processadores. Foram utilizados o: Intel CoreTM i5 3317U CPU @ 1.70GHz x 4 e o AMD ... 
+\item Processadores. Foram utilizados o: Intel® CoreTM i5­3317U CPU @ 1.70GHz × 4 e o AMD ... 
 \end{itemize} 
 O código de cada um dos experimentos pode ser observado no anexo 1 e 2.  
 \subsection{Resultados} 
 Os resultados nos tempos de execução dos experimentos da primeira categoría, sem otimização de codigo, foram os siguentes: 
-
-\subsection{Tabela mais elaborada}
-\begin{table}[htb]
-\begin{center}
-\begin{tabular}{|l|r|c|r|r|} \hline
-            & \multicolumn{2}{|c|}{{CCF preconditioner}} & \multicolumn{2}{|c|}{{Number of nonzeros}} \\ \cline{2-5}
-{Problem}   & \multicolumn{1}{|c|}{$\eta$}  & \multicolumn{1}{|c|}{$ \frac{n(AD^{-1}A^T)}{nrow}$} & \multicolumn{1}{|c|}{FCC} & \multicolumn{1}{|c|}{Cholesky}  \\ \hline \hline
-ELS-19    &  -11 & 31 &  87750  & 3763686  \\\hline
-SCR20     &  -12 & 31 &  103179 & 2591752  \\\hline
-NUG15     &  -12 & 32 &  54786  & 6350444 \\\hline
-PDS-20    &   15 & 5  &  625519 & 7123636\\\hline
-\end{tabular}
+\begin{table}[htb] 
+\begin{center} 
+\begin{tabular}{|l|r|c|r|r|} \hline 
+ 
+& \multicolumn{2}{|c|}{{CCF preconditioner}} & \multicolumn{2}{|c|}{{Number of nonzeros}} \\ \cline{2­5} 
+{Problem}   & \multicolumn{1}{|c|}{$\eta$}  & \multicolumn{1}{|c|}{$ \frac{n(AD^{­1}A^T)}{nrow}$} & \multicolumn{1}{|c|}{FCC} & \multicolumn{1}{|c|}{Cholesky}  \\ \hline \hline 
+ELS­19 &  ­11 & 31 &  87750  & 3763686  \\\hline 
+SCR20  &  ­12 & 31 &  103179 & 2591752  \\\hline 
+NUG15  &  ­12 & 32 &  54786  & 6350444 \\\hline 
+PDS­20 &   15 & 5  &  625519 & 7123636\\\hline 
+\end{tabular} 
 \caption{Título da Tabela.}   
-\label{tabn}
-\end{center}
-\end{table}
+\label{tabn} 
+\end{center} 
+\end{table} 
  
 Os resultados nos tempos de execução dos experimentos da segunda categoría, com otimização de codigo, foram os siguentes: 
-
-\subsection{Tabela mais elaborada}
-\begin{table}[htb]
-\begin{center}
-\begin{tabular}{|l|r|c|r|r|} \hline
-            & \multicolumn{2}{|c|}{{CCF preconditioner}} & \multicolumn{2}{|c|}{{Number of nonzeros}} \\ \cline{2-5}
-{Problem}   & \multicolumn{1}{|c|}{$\eta$}  & \multicolumn{1}{|c|}{$ \frac{n(AD^{-1}A^T)}{nrow}$} & \multicolumn{1}{|c|}{FCC} & \multicolumn{1}{|c|}{Cholesky}  \\ \hline \hline
-ELS-19    &  -11 & 31 &  87750  & 3763686  \\\hline
-SCR20     &  -12 & 31 &  103179 & 2591752  \\\hline
-NUG15     &  -12 & 32 &  54786  & 6350444 \\\hline
-PDS-20    &   15 & 5  &  625519 & 7123636\\\hline
-\end{tabular}
+\begin{table}[htb] 
+\begin{center} 
+\begin{tabular}{|l|r|c|r|r|} \hline 
+ 
+& \multicolumn{2}{|c|}{{CCF preconditioner}} & \multicolumn{2}{|c|}{{Number of nonzeros}} \\ \cline{2­5} 
+{Problem}   & \multicolumn{1}{|c|}{$\eta$}  & \multicolumn{1}{|c|}{$ \frac{n(AD^{­1}A^T)}{nrow}$} & \multicolumn{1}{|c|}{FCC} & \multicolumn{1}{|c|}{Cholesky}  \\ \hline \hline 
+ELS­19 &  ­11 & 31 &  87750  & 3763686  \\\hline 
+SCR20 &  ­12 & 31 &  103179 & 2591752  \\\hline 
+NUG15 &  ­12 & 32 &  54786  & 6350444 \\\hline 
+PDS­20 &   15 & 5  &  625519 & 7123636\\\hline \end{tabular} 
 \caption{Título da Tabela.}   
-\label{tabn2}
-\end{center}
-\end{table}
-
+\label{tabn2} 
+\end{center} 
+\end{table} 
+ 
 Um grafo de todos os tempos de execução pode ser observado na figura ~\ref{fig:pdsmodel} 
  
 \begin{figure}[htb] 
@@ -182,87 +178,75 @@ Apresentar as conclusões finais.
  
 Código do progama mult.c sequencial com troucas para a medição do tempo. 
 \begin{verbatim} 
-/*
-ID: diana.n1
-PROG: MultSeqCodeChange
-LANG: C++
-*/
-
-#include <stdio.h>
-#include <assert.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <time.h>
-#include "omp.h"
-
-void transpose(int n, long ** m){
-	long tmp;
-	for (int i = 0; i < n; i++){
-		for (int j = i+1; j < n; j++){
-			tmp = m[i][j];
-			m[i][j] = m[j][i];
-			m[j][i] = tmp;
-		}
-	}	
-}
-
-int main(int argc, char **argv) {
-	double start, end; 
-	start = omp_get_wtime();
-	long **a, **b, **c;
-    int N = 500;
-	
-    if (argc == 2) {
-      N = atoi (argv[1]);
-      assert (N > 0);
-    }
-
-    int i,j,k,mul=5;
-    long col_sum = N * (N-1) / 2, tmp;
-	
-		
-	a = (long **)malloc (N * sizeof(long *));
-	b = (long **)malloc (N * sizeof(long *));
-	c = (long **)malloc (N * sizeof(long *));
-	for (i=0; i<N; i++) {
-	  a[i] = (long *)malloc (N * sizeof(long));
-	  b[i] = (long *)malloc (N * sizeof(long));
-	  c[i] = (long *)malloc (N * sizeof(long));
-	}
-
-
-	for (i=0; i<N; i++){
-	  for (j=0; j<N; j++) {
-		a[i][j] = i*mul;
-		b[i][j] = i;
-		c[i][j] = 0;
-	  }
-	}
-
-	printf ("Matrix generation finished.\n");         
-
-	transpose(N, b);
-	for (i=0; i<N; i++){
-	  	for (j=0; j<N; j++){
-			tmp = 0;
-			for (k=0; k<N; k++){
-				tmp += a[i][k] * b[j][k];
-			}
-			c[i][j] = tmp;
-	  	}
-	}
-
-	printf ("Multiplication finished.\n");         
-	
-	for (i=0; i<N; i++)
-	  for (j=0; j<N; j++)
-		assert ( c[i][j] == i*mul * col_sum);  
-    printf ("Test finished.\n");         
-
-	end = omp_get_wtime();
-	printf("Time: %lf.\n", end-start);
-}
-\end{verbatim}
+/* 
+ID: diana.n1 
+PROG: Mult 
+LANG: C++ 
+*/ 
+ 
+#include <stdio.h> #include <assert.h> 
+#include <stdlib.h> 
+#include <assert.h> 
+#include <time.h> 
+#include "omp.h" 
+ 
+ 
+int main(int argc, char **argv) { 
+    double start, end; 
+    start = omp_get_wtime(); 
+    long **a, **b, **c; 
+    int N = 500; 
+   
+    if (argc == 2) { 
+      N = atoi (argv[1]); 
+      assert (N > 0); 
+    } 
+ 
+    int i,j,k,mul=5; 
+    long col_sum = N * (N­1) / 2; 
+   
+ 
+  
+    a = (long **)malloc (N * sizeof(long *)); 
+    b = (long **)malloc (N * sizeof(long *)); 
+    c = (long **)malloc (N * sizeof(long *)); 
+    for (i=0; i<N; i++) { 
+      a[i] = (long *)malloc (N * sizeof(long)); 
+      b[i] = (long *)malloc (N * sizeof(long)); 
+      c[i] = (long *)malloc (N * sizeof(long)); 
+    } 
+ 
+ 
+    for (i=0; i<N; i++) 
+      for (j=0; j<N; j++) { 
+        a[i][j] = i*mul; 
+        b[i][j] = i; 
+        c[i][j] = 0; 
+      } 
+     printf ("Matrix generation finished.\n"); 
+  
+ 
+  
+    for (i=0; i<N; i++) 
+      for (j=0; j<N; j++) 
+        for (k=0; k<N; k++) 
+          c[i][j] += a[i][k] * b[k][j]; 
+ 
+    printf ("Multiplication finished.\n"); 
+  
+ 
+  
+    for (i=0; i<N; i++) 
+      for (j=0; j<N; j++) 
+        assert ( c[i][j] == i*mul * col_sum);   
+   
+    printf ("Test finished.\n"); 
+  
+ 
+    end = omp_get_wtime(); 
+    printf("Time: %lf.\n", end­start); 
+} 
+\end{verbatim} 
  
 Código do progama mult.c com paralelização no laço da variável i. 
 \begin{verbatim} 
