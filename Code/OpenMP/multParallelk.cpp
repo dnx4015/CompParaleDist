@@ -1,6 +1,6 @@
 /*
 ID: diana.n1
-PROG: Mult
+PROG: MultParallelk
 LANG: C++
 */
 
