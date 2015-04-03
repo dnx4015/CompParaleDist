@@ -35,9 +35,9 @@
 
   
 \pagestyle {empty}
-\abstract{Nesse Exercício Programa o objetivo foi explorar a computação paralela com memoria compartilhada, para isso foi usado o padrão openMP.
-A primeira parte do trabalho explora o cuidado que deve-se ter no momento de realizar o desenvolvimento de programas usando as diretivas do openMP. É muito simples cometer erros quando ainda se está pensando de maneira sequencial, ao assumir algum comportamento ou quando não se conhece bem o comportamento padrão das diretivas usadas.
-A segunda parte do EP procura avaliar as melhoras (ou falta delas) no tempo de execução de um programa alvo, mult.c, que realiza a multiplicação de 2 matrizes. Para avaliar o desempenho da versão sequencial versus a paralela uma serie de experimentos foram realizados. Alguns deles involucraram a alterção do programa para criar distintas zonas paralelas e também a execução deles usando diferentes numeros de threads.
+\abstract{Nesse Exercício Programa (EP) o objetivo foi explorar a computação paralela com memoria compartilhada, para isso foi usado o padrão OpenMP.
+A primeira parte do trabalho explora o cuidado que deve-se ter no momento de realizar o desenvolvimento de programas usando as diretivas do OpenMP. É muito simples cometer erros quando ainda se está pensando de maneira sequencial, ao assumir algum comportamento ou quando não se conhece bem o comportamento padrão das diretivas usadas.
+A segunda parte do EP procura avaliar as melhoras (ou falta delas) no tempo de execução de um programa alvo, mult.c, que realiza a multiplicação de 2 matrizes. Para avaliar o desempenho da versão sequencial versus a paralela uma serie de experimentos foram realizados. Alguns deles involucraram a alteração do programa para criar distintas zonas paralelas e também a execução deles usando diferentes números de threads.
 A continuação presentamos os experimentos, resultados e conclusões.}
 
 \newpage 
@@ -59,27 +59,27 @@ A continuação presentamos os experimentos, resultados e conclusões.}
  
  
   
-\setlength{\parindent}{0in}  %espaco entre paragrafo e margem 
+\setlength{\parindent}{0in}  %espaço entre paragrafo e margem 
 % Espaçamento entre parágrafos 
 \parskip 5pt   
  \clearpage 
  
 \section{Introdução} 
-A computação paralela consiste em executar um conjunto de cálculos de maneira simultanea ~\cite{Gottlieb89}. A meta de este tipo de computação é diminuir o tempo de execução que exigem algumas aplicaçoes, e.g. aquelas com fortes requerimentos de computo. Atualmente, existem computadores com múltiplos cores; além de isso também contam com tecnologias como hyper-threading, o que gera que o sistema operativo assuma que conta com uma maior quantidade de recursos de computo. Os recursos, por tanto, estão prontos para ser usados. Porém, para realmente obter uma melhoria no rendimento não é suficiente executar as aplicaçoes em uma máquina multicore, é necessário que elas troquem seus algoritmos sequências por uma versão paralela. De outra maneira, não estaria-se fazendo uso do processamento paralelo e seus beneficios.  
+A computação paralela consiste em executar um conjunto de cálculos de maneira simultânea ~\cite{Gottlieb89}. A meta de este tipo de computação é diminuir o tempo de execução que exigem algumas aplicações, e.g. aquelas com fortes requerimentos de computo. Atualmente, existem computadores com múltiplos cores; além de isso também contam com tecnologias como hyper-threading, o que gera que o sistema operativo assuma que conta com uma maior quantidade de recursos de computo. Os recursos, por tanto, estão prontos para ser usados. Porém, para realmente obter uma melhoria no rendimento não é suficiente executar as aplicações em uma máquina multicore, é necessário que elas troquem seus algoritmos sequências por uma versão paralela. De outra maneira, não estaria-se fazendo uso do processamento paralelo e seus benefícios.  
 
 O grande problema é que a troca de algoritmos sequências por paralelos não é um trabalho simples. Existem diversos problemas na geração de códigos paralelos de bom rendimento, alguns deles são ~\cite{Matloff14}: 
 \begin{itemize} 
 \item Gargalos de comunicação. Debe ter-se em consideração a quantidade processadores que serão utilizados na execução e o overhead produto da comunicação entre estes processadores e a memoria~\cite{Gebali11}. Isto é importante pois pode acontecer que um programa em versão paralela tome mais tempo na execução do que na versão sequencial. O que se debe a que a memoria só pode ser acessada por um thread em qualquer momento e o custo de manter as caches de cada processador coerente também gera um overhead. 
 \item Balanceamento de carga. Ao fazer uma divisão de trabalho o ideal é que cada uma das partes tenha uma carga igual. Se uma delas tem mais trabalho do que as outras então no final o problema volta a ser sequencial pois a maioria termina com sua carga e umas poucas continuam com o resto do trabalho. 
 \item Problemas na construção do código. Os desenvolvedores estão acostumados a pensar em forma sequencial e por tanto é muito fácil cometer erros de 
-concorrência. As operaçes simples, como por exemplo a assinação de valores a uma variável, causam resultados inesperados na versão paralela. Isto é devido as condiçes de corrida, i.e. quando o programa se desenvolve em um ordem diferente ao que o programador planeio. 
+concorrência. As operações simples, como por exemplo a assinação de valores a uma variável, causam resultados inesperados na versão paralela. Isto é devido as condições de corrida, i.e. quando o programa se desenvolve em um ordem diferente ao que o programador planeio. 
 \end{itemize} 
- Para evitar os erros produzidos por o pouco cuidado do desenvolvedor e para maximizar o paralelismo dos algoritmos que são sequências existem conjuntos de diretivas que criam um código paralelo executável. OpenMP é um conjunto de diretivas para o compilar, rutinas de libraria e variáveis de entorno que podem ser usadas para a geração de paralelismo em códigos Fortran e C/C++ ~\cite{OpenMP13}. O objetivo é garantir o correto funcionamento dos programas e obter os beneficios do paralelismo. 
+ Para evitar os erros produzidos por o pouco cuidado do desenvolvedor e para maximizar o paralelismo dos algoritmos que são sequências existem conjuntos de diretivas que criam um código paralelo executável. OpenMP é um conjunto de diretivas para o compilar, rutinas de libraria e variáveis de entorno que podem ser usadas para a geração de paralelismo em códigos Fortran e C/C++ ~\cite{OpenMP13}. O objetivo é garantir o correto funcionamento dos programas e obter os benefícios do paralelismo. 
  
-Neste trabalho exploramos os problemas persistentes no uso das diretivas do OpenMP. Tanto no desenvolvimento de código erróneo, como na geração de overhead pela geração de áreas paralelas ineficientes. Para isso desenvolvemos experimentos para obter o tempo promedio na execução de códigos gerados a partir de distintas áreas paralelas, em ambientes diferentes e com distintas quantidades de threads.  
+Neste trabalho exploramos os problemas persistentes no uso das diretivas do OpenMP. Tanto no desenvolvimento de código errôneo, como na geração de overhead pela geração de áreas paralelas ineficientes. Para isso desenvolvemos experimentos para obter o tempo promédio na execução de códigos gerados a partir de distintas áreas paralelas, em ambientes diferentes e com distintas quantidades de threads.  
  
 \section{Exercício 1} 
-\textbf{Escolher um código na internet que use as diretivas de compilação do openMP, esse código deve ser procurado nos respetivos tutoriais e manuais desse padrão de programação multiprocessamento. A ideia e encontrar erros nessas implementações fornecidas ou apresentadas nos tutoriais consultados. Apresente o código, aponte os problemas e descreva quais são as correções feitas para tirar o erro da aplicação.} 
+\textbf{Escolher um código na internet que use as diretivas de compilação do OpenMP, esse código deve ser procurado nos respetivos tutoriais e manuais desse padrão de programação multiprocessamento. A ideia e encontrar erros nessas implementações fornecidas ou apresentadas nos tutoriais consultados. Apresente o código, aponte os problemas e descreva quais são as correções feitas para tirar o erro da aplicação.} 
  
 \subsection{Código com erro} 
 Comando para preservar a formatação do texto. 
@@ -100,27 +100,27 @@ INSERT CODE HERE
 \clearpage 
  \section{Exercício 2} 
 \label{sec:tab} 
-\textbf{Modifique o programa mult.c, que realiza a multiplicação de 2 matrizes. Modifique este código para que ele realize a multiplicação utilizando as primitivas de paralelização de openMP. Compare o desempenho com 1, 2, 3 4, 8 e 16 threads. Tente realizar a paralelização no laço for das variáveis i, j e k, explicando no relatorio se o comportamento obtido está correto ou não. Apresente e descreva no relatorio grafos, tabelas e estatísticas dos tempos de execução.
+\textbf{Modifique o programa mult.c, que realiza a multiplicação de 2 matrizes. Modifique este código para que ele realize a multiplicação utilizando as primitivas de paralelização de OpenMP. Compare o desempenho com 1, 2, 3 4, 8 e 16 threads. Tente realizar a paralelização no laço for das variáveis i, j e k, explicando no relatório se o comportamento obtido está correto ou não. Apresente e descreva no relatório grafos, tabelas e estatísticas dos tempos de execução.
 \begin{itemize} 
 \item Compare o desempenho obtido, explicando por que melhorou ou piorou e compare também a execução do programa em sua versão sequencial. 
-\item Um dos objetivos e verificar se algum overhead e inserido pelo ambiente de execução (runtime openMP) quando a versão paralela do programa em openMP executa apenas com uma (1) thread, comparando-se com a versão sequencial (mult.c). 
+\item Um dos objetivos e verificar se algum overhead e inserido pelo ambiente de execução (runtime OpenMP) quando a versão paralela do programa em OpenMP executa apenas com uma (1) thread, comparando-se com a versão sequencial (mult.c). 
 \item Esse programa deve ser executado em pelo menos dois processadores diferentes, para efeitos de encontrar os intervalos de confiança cada execução deve ser repetida pelo menos 10 vezes. 
 \item Outras informações que julgarem pertinentes ao contexto do trabalho podem ser adicionadas, e poderão ser somadas como pontos adicionais do EP.
 \end{itemize}
 }
 \subsection{Experimentos} 
-Os experimentos realizados neste exercício podem ser separados em duas categorias: a primeira consta da adição de diretivas openMP para criar as zonas paralelas, a segunda consta tanto da adição das  diretivas como de câmbios no mesmo código para optimizar o uso dos recursos. Cada uma de estas categorias conta com 4 programas diferentes: o programa sequencial, o programa com paralelização no laço da variavel i, o programa com paralelização no laço da variavel j, e finalmente, o programa com paralelização no laço da variavel k. Cada programa, a excepçao do programa sequencial, foi executado com diferentes números de threads.  
+Os experimentos realizados neste exercício podem ser separados em duas categorias: a primeira consta da adição de diretivas OpenMP para criar as zonas paralelas, a segunda consta tanto da adição das  diretivas como de câmbios no mesmo código para optimizar o uso dos recursos. Cada uma de estas categorias conta com 4 programas diferentes: o programa sequencial, o programa com paralelização no laço da variável i, o programa com paralelização no laço da variável j, e finalmente, o programa com paralelização no laço da variável k. Cada programa, a excepção do programa sequencial, foi executado com diferentes números de threads.  
  
 Algumas das características dos experimentos são: 
 \begin{itemize} 
-\item Otimizaçao de código. Certas partes do programa original mult.c para melhorar o uso dos recursos. Estas otimizações foram dois: o uso de uma variavel temporal, $tmp$ para armazenar a suma das multiplicações e o uso de um metodo $transpose$ para obter um acesso sequencial da matriz $b$. 
+\item Otimização de código. Certas partes do programa original mult.c para melhorar o uso dos recursos. Estas otimizações foram dois: o uso de uma variável temporal, $tmp$ para armazenar a suma das multiplicações e o uso de um método $transpose$ para obter um acesso sequencial da matriz $b$. 
 \item Zonas paralelas. Diferentes zonas foram criadas no laço das variáveis i, j e k.  
 \item Número de threads. O desempenho foi avaliado com 1, 2, 3, 4, 8 e 16 threads.   
-\item Processadores. Foram utilizados o: Intel CoreTM i5 3317U CPU @ 1.70GHz x 4 e o AMD ... 
+\item Processadores. Foram utilizados o: Intel CoreTM i5-3317U CPU @ 1.70GHz x 4 e o AMD A4-1200 APU with Radeon(TM) HD Graphics 1.00Ghz.
 \end{itemize} 
 O código de cada um dos experimentos pode ser observado no anexo 1 e 2.  
 \subsection{Resultados} 
-Os resultados nos tempos de execução dos experimentos da primeira categoría, sem otimização de codigo, foram os siguentes: 
+Os resultados nos tempos de execução dos experimentos da primeira categoria, sem otimização de código, foram os seguentes: 
 
 \subsection{Tabela mais elaborada}
 \begin{table}[htb]
@@ -138,7 +138,7 @@ PDS-20    &   15 & 5  &  625519 & 7123636\\\hline
 \end{center}
 \end{table}
  
-Os resultados nos tempos de execução dos experimentos da segunda categoría, com otimização de codigo, foram os siguentes: 
+Os resultados nos tempos de execução dos experimentos da segunda categoria, com otimização de código, foram os seguentes: 
 
 \subsection{Tabela mais elaborada}
 \begin{table}[htb]
@@ -180,7 +180,7 @@ Apresentar as conclusões finais.
 \section{Anexo I} 
 \label{anex1} 
  
-Código do progama mult.c sequencial com troucas para a medição do tempo. 
+Código do programa mult.c sequencial com trocas para a medição do tempo. 
 \begin{verbatim} 
 /*
 ID: diana.n1
@@ -264,7 +264,7 @@ int main(int argc, char **argv) {
 }
 \end{verbatim}
  
-Código do progama mult.c com paralelização no laço da variável i. 
+Código do programa mult.c com paralelização no laço da variável i. 
 \begin{verbatim} 
 /*
 ID: diana.n1
@@ -350,7 +350,7 @@ int main(int argc, char **argv) {
 
 \end{verbatim} 
  
-Código do progama mult.c com paralelização no laço da variável j. 
+Código do programa mult.c com paralelização no laço da variável j. 
 \begin{verbatim} 
 /*
 ID: diana.n1
@@ -436,7 +436,7 @@ int main(int argc, char **argv) {
 
 \end{verbatim} 
  
-Código do progama mult.c com paralelização no laço da variável k. 
+Código do programa mult.c com paralelização no laço da variável k. 
 \begin{verbatim} 
 /*
 ID: diana.n1
@@ -530,7 +530,7 @@ int main(int argc, char **argv) {
 \section{Anexo II} 
 \label{anex2} 
  
-Código do progama mult.c sequencial com optimizações de código. 
+Código do programa mult.c sequencial com optimizações de código. 
 \begin{verbatim} 
 /*
 ID: diana.n1
@@ -615,7 +615,7 @@ int main(int argc, char **argv) {
 
 \end{verbatim} 
  
-Código do progama mult.c com paralelização no laço da variável i com optimizações de código. 
+Código do programa mult.c com paralelização no laço da variável i com optimizações de código. 
 \begin{verbatim} 
 
 /*
@@ -721,7 +721,7 @@ int main(int argc, char **argv) {
 
 \end{verbatim} 
  
-Código do progama mult.c com paralelização no laço da variável j com optimizações de código. 
+Código do programa mult.c com paralelização no laço da variável j com optimizações de código. 
 \begin{verbatim} 
 /*
 ID: diana.n1
@@ -823,7 +823,7 @@ int main(int argc, char **argv) {
 
 \end{verbatim} 
  
-Código do progama mult.c com paralelização no laço da variável k com optimizações de código. 
+Código do programa mult.c com paralelização no laço da variável k com optimizações de código. 
 \begin{verbatim} 
 /*
 ID: diana.n1
