@@ -1,0 +1,46 @@
+../Code/OpenMPCodeOptimization/multSeq
+# threads: 1, avg time: 0.5411119
+../Code/OpenMPCodeOptimization/multParallelj
+# threads: 1, avg time: 0.33062105
+# threads: 2, avg time: 0.33419305
+# threads: 3, avg time: 0.35288545
+# threads: 4, avg time: 0.3650159
+# threads: 8, avg time: 0.33168095
+# threads: 16, avg time: 0.32741905
+../Code/OpenMPCodeOptimization/multParallelk
+# threads: 1, avg time: 0.5571915
+# threads: 2, avg time: 0.5535137
+# threads: 3, avg time: 0.58089275
+# threads: 4, avg time: 0.5684052
+# threads: 8, avg time: 0.53832
+# threads: 16, avg time: 0.5904839
+../Code/OpenMPCodeOptimization/multParalleli
+# threads: 1, avg time: 0.3448215
+# threads: 2, avg time: 0.32253605
+# threads: 3, avg time: 0.3294421
+# threads: 4, avg time: 0.3431036
+# threads: 8, avg time: 0.33517825
+# threads: 16, avg time: 0.35464675
+../Code/OpenMP/multSeq
+# threads: 1, avg time: 2.34694185
+../Code/OpenMP/multParallelj
+# threads: 1, avg time: 1.27471045
+# threads: 2, avg time: 1.1572065
+# threads: 3, avg time: 1.1840168
+# threads: 4, avg time: 1.15636745
+# threads: 8, avg time: 1.11791045
+# threads: 16, avg time: 1.1979855
+../Code/OpenMP/multParallelk
+# threads: 1, avg time: 0.69908345
+# threads: 2, avg time: 0.6424523
+# threads: 3, avg time: 0.64020505
+# threads: 4, avg time: 0.82176195
+# threads: 8, avg time: 0.71773725
+# threads: 16, avg time: 0.6943754
+../Code/OpenMP/multParalleli
+# threads: 1, avg time: 1.25616715
+# threads: 2, avg time: 1.14277455
+# threads: 3, avg time: 1.138982
+# threads: 4, avg time: 1.2746771
+# threads: 8, avg time: 1.12861815
+# threads: 16, avg time: 1.19219295
