@@ -10,11 +10,11 @@ int main(){
 	for( i = 0 ; i < SIZE ; i++){
 // Correccion, debe usarse tanto 'ordered clause' como 'ordered construct'
 // Introducao ao OpenMP, pagina 50
+		A[ i ] = i * i ;
 		#pragma omp ordered
 		{
-			A[ i ] = i * i ;
+			printf( "Th[ %d ]: %02d = %03d\n" , omp_get_thread_num() , i , A[ i ] ) ;
 		}
-		printf( "Th[ %d ]: %02d = %03d\n" , omp_get_thread_num() , i , A[ i ] ) ;
 	}
 	return 0 ;
 }
