@@ -1,6 +1,6 @@
 \documentclass[a4paper,12pt,fleqn]{article}
 %\usepackage {psfig,epsfig} % para incluir figuras em PostScript
-\usepackage{amsfonts,amsthm,amsopn,amssymb,latexsym}
+\usepackage{amsfonts,amsthm,amsopn,amssymb,latexsym,subcaption}
 \usepackage{graphicx}
 \usepackage[T1]{fontenc}
 \usepackage[brazil]{babel}
@@ -109,63 +109,176 @@ INSERT CODE HERE
 \end{itemize}
 }
 \subsection{Experimentos} 
-Os experimentos realizados neste exercício podem ser separados em duas categorias: a primeira consta da adição de diretivas OpenMP para criar as zonas paralelas, a segunda consta tanto da adição das  diretivas como de câmbios no mesmo código para optimizar o uso dos recursos. Cada uma de estas categorias conta com 4 programas diferentes: o programa sequencial, o programa com paralelização no laço da variável i, o programa com paralelização no laço da variável j, e finalmente, o programa com paralelização no laço da variável k. Cada programa, a excepção do programa sequencial, foi executado com diferentes números de threads.  
+Os experimentos realizados neste exercício podem ser separados em duas categorias: a primeira consta da adição de diretivas OpenMP para criar as zonas paralelas, a segunda consta tanto da adição das  diretivas como de câmbios no mesmo código para otimizar o uso dos recursos. Cada uma de estas categorias conta com 4 programas diferentes: o programa sequencial, o programa com paralelização no laço da variável $i$, o programa com paralelização no laço da variável $j$, e finalmente, o programa com paralelização no laço da variável $k$. Cada programa, a excepção do programa sequencial, foi executado com diferentes números de threads.  
  
-Algumas das características dos experimentos são: 
+Algumas das características importantes dos experimentos são: 
 \begin{itemize} 
-\item Otimização de código. Certas partes do programa original mult.c para melhorar o uso dos recursos. Estas otimizações foram dois: o uso de uma variável temporal, $tmp$ para armazenar a suma das multiplicações e o uso de um método $transpose$ para obter um acesso sequencial da matriz $b$. 
-\item Zonas paralelas. Diferentes zonas foram criadas no laço das variáveis i, j e k.  
-\item Número de threads. O desempenho foi avaliado com 1, 2, 3, 4, 8 e 16 threads.   
-\item Processadores. Foram utilizados o: Intel CoreTM i5-3317U CPU @ 1.70GHz x 4 e o AMD A4-1200 APU with Radeon(TM) HD Graphics 1.00Ghz.
+    \item Otimização de código. Certas partes do programa original mult.c foram cambiadas para melhorar o uso dos recursos. Estas otimizações foram dois: 
+    \begin{itemize}
+        \item Variável temporal. Uma variável temporal, $tmp$, foi criada para armazenar a suma das multiplicações no laço $k$.
+        \item Método de transposição. Um método de transposição foi implementado para obter um acesso sequencial da matriz $b$ no laço $k$.
+    \end{itemize}
+    \item Zonas paralelas. Diferentes zonas foram criadas nos laços das variáveis $i$, $j$ e $k$.  
+    \item Número de threads. O desempenho foi avaliado com 1, 2, 3, 4, 8 e 16 threads.   
+    \item Processadores. Foram utilizados o: \textbf{Intel CoreTM i5-3317U CPU @ 1.70GHz x 4} e o \textbf{Intel Xeon CPU E5-2630L v2 @ 2.40GHz}.
 \end{itemize} 
-O código de cada um dos experimentos pode ser observado no anexo 1 e 2.  
+
+O código de cada um dos experimentos pode ser observado no Anexo 1 e 2. Sendo o Anexo 1 o conjunto de códigos com adições de diretivas de paralelização; e o Anexo 2 os códigos com diretivas de paralelização, além das otimizações mencionadas previamente.  
+
 \subsection{Resultados} 
-Os resultados nos tempos de execução dos experimentos da primeira categoria, sem otimização de código, foram os seguentes: 
 
-\subsection{Tabela mais elaborada}
-\begin{table}[htb]
-\begin{center}
-\begin{tabular}{|l|r|c|r|r|} \hline
-            & \multicolumn{2}{|c|}{{CCF preconditioner}} & \multicolumn{2}{|c|}{{Number of nonzeros}} \\ \cline{2-5}
-{Problem}   & \multicolumn{1}{|c|}{$\eta$}  & \multicolumn{1}{|c|}{$ \frac{n(AD^{-1}A^T)}{nrow}$} & \multicolumn{1}{|c|}{FCC} & \multicolumn{1}{|c|}{Cholesky}  \\ \hline \hline
-ELS-19    &  -11 & 31 &  87750  & 3763686  \\\hline
-SCR20     &  -12 & 31 &  103179 & 2591752  \\\hline
-NUG15     &  -12 & 32 &  54786  & 6350444 \\\hline
-PDS-20    &   15 & 5  &  625519 & 7123636\\\hline
-\end{tabular}
-\caption{Título da Tabela.}   
-\label{tabn}
-\end{center}
+Os resultados nos tempos de execução dos experimentos da primeira categoria, foram os seguentes: 
+
+\begin{table}[!htb]
+    \begin{subtable}{.5\linewidth}
+        \centering{
+        \resizebox{.9\columnwidth}{!}{%
+        \begin{tabular}{|c|r|r|r|r|} \hline
+            \multicolumn{1}{|c|}{{\# Threads}} & \multicolumn{1}{|c|}       {{Sequencial}} & \multicolumn{1}{|c|}{{Paralela $i$}} & \multicolumn{1}{|c|}{{Paralela $j$}} & \multicolumn{1}{|c|}{{Paralela $k$}} \\ \cline{1-5}
+            1    & 1.4042 & 0.7065  & 0.7559  & 0.7025  \\\hline
+            2    & 1.4042 & 0.7169  & 0.7603  & 0.6920  \\\hline
+            3    & 1.4042 & 0.7171  & 0.7662  & 0.7268  \\\hline
+            4    & 1.4042 & 0.7137  & 0.7616  & 0.6976  \\\hline
+            8    & 1.4042 & 0.7074  & 0.7573  & 0.7060  \\\hline
+            16   & 1.4042 & 0.7129  & 0.7566  & 0.6960  \\\hline
+        \end{tabular}%%
+        }}
+        \label{tab:corei5so}
+        \caption{Intel Core i5}
+    \end{subtable}%
+    \begin{subtable}{.5\linewidth}
+        \centering{
+        \resizebox{.9\columnwidth}{!}{%
+        \begin{tabular}{|c|r|r|r|r|} \hline
+            \multicolumn{1}{|c|}{{\# Threads}} & \multicolumn{1}{|c|}{{Sequencial}} & \multicolumn{1}{|c|}{{Paralela $i$}} & \multicolumn{1}{|c|}{{Paralela $j$}} & \multicolumn{1}{|c|}{{Paralela $k$}} \\ \cline{1-5}
+            1    & 2.3469 & 1.2561  & 1.2747  & 0.6990  \\\hline
+            2    & 2.3469 & 1.1427  & 1.1572  & 0.6424  \\\hline
+            3    & 2.3469 & 1.1389  & 1.1804  & 0.6402  \\\hline
+            4    & 2.3469 & 1.2746  & 1.1563  & 0.8217  \\\hline
+            8    & 2.3469 & 1.1286  & 1.1179  & 0.7177  \\\hline
+            16   & 2.3469 & 1.1921  & 1.1979  & 0.6943  \\\hline
+        \end{tabular}%
+        }}
+        \label{tab:xeonso}
+        \caption{Intel Xeon}
+    \end{subtable}
+    \caption{Diretivas OpenMP, sem Otimizações}
+    \label{tab:so}
 \end{table}
- 
-Os resultados nos tempos de execução dos experimentos da segunda categoria, com otimização de código, foram os seguentes: 
 
-\subsection{Tabela mais elaborada}
-\begin{table}[htb]
-\begin{center}
-\begin{tabular}{|l|r|c|r|r|} \hline
-            & \multicolumn{2}{|c|}{{CCF preconditioner}} & \multicolumn{2}{|c|}{{Number of nonzeros}} \\ \cline{2-5}
-{Problem}   & \multicolumn{1}{|c|}{$\eta$}  & \multicolumn{1}{|c|}{$ \frac{n(AD^{-1}A^T)}{nrow}$} & \multicolumn{1}{|c|}{FCC} & \multicolumn{1}{|c|}{Cholesky}  \\ \hline \hline
-ELS-19    &  -11 & 31 &  87750  & 3763686  \\\hline
-SCR20     &  -12 & 31 &  103179 & 2591752  \\\hline
-NUG15     &  -12 & 32 &  54786  & 6350444 \\\hline
-PDS-20    &   15 & 5  &  625519 & 7123636\\\hline
-\end{tabular}
-\caption{Título da Tabela.}   
-\label{tabn2}
-\end{center}
-\end{table}
-
-Um grafo de todos os tempos de execução pode ser observado na figura ~\ref{fig:pdsmodel} 
+Os grafos dos tempos de execução podem ser observado nas figuras ~\ref{fig:corei5so} e ~\ref{fig:xeonso}.
  
 \begin{figure}[htb] 
-\centering 
- 
-\includegraphics[height=14cm]{Images/figura} 
-\label{fig:pdsmodel} 
+    \centering
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[height=6cm]{Images/corei5so} 
+        \caption{Intel Core i5}
+        \label{fig:corei5so} 
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[height=6cm]{Images/xeonso} 
+        \caption{Intel Xeon}
+        \label{fig:xeonso} 
+    \end{subfigure}
+    \caption{Diretivas OpenMP, sem otimizações}
+    \label{fig:so}
 \end{figure} 
- 
+
+
+TALK STH
+
+Os resultados nos tempos de execução dos experimentos da segunda categoria, foram os seguentes:
+
+\begin{table}[!htb]
+    \centering
+    \begin{subtable}{.5\linewidth}
+        \centering{
+        \resizebox{.9\columnwidth}{!}{%
+        \begin{tabular}{|c|r|r|r|r|} \hline
+            \multicolumn{1}{|c|}{{\# Threads}} & \multicolumn{1}{|c|}{{Sequencial}} & \multicolumn{1}{|c|}{{Paralela $i$}} & \multicolumn{1}{|c|}{{Paralela $j$}} & \multicolumn{1}{|c|}{{Paralela $k$}} \\ \cline{1-5}
+            1    & 0.5229 & 0.3506  & 0.4999  & 0.6410  \\\hline
+            2    & 0.5229 & 0.3479  & 0.4848  & 0.6375  \\\hline
+            3    & 0.5229 & 0.3519  & 0.4873  & 0.6349  \\\hline
+            4    & 0.5229 & 0.3500  & 0.3703  & 0.6383  \\\hline
+            8    & 0.5229 & 0.3486  & 0.3468  & 0.6361  \\\hline
+            16   & 0.5229 & 0.3957  & 0.3477  & 0.6318  \\\hline
+        \end{tabular}%
+        }}
+        \label{tab:corei5co}
+        \caption{Intel Core i5}
+    \end{subtable}%
+    \begin{subtable}{.5\linewidth}
+        \centering{
+        \resizebox{.9\columnwidth}{!}{%
+        \begin{tabular}{|c|r|r|r|r|} \hline
+            \multicolumn{1}{|c|}{{\# Threads}} & \multicolumn{1}{|c|}{{Sequencial}} & \multicolumn{1}{|c|}{{Paralela $i$}} & \multicolumn{1}{|c|}{{Paralela $j$}} & \multicolumn{1}{|c|}{{Paralela $k$}} \\ \cline{1-5}
+            1    & 0.5411 & 0.3448  & 0.3306  & 0.5571  \\\hline
+            2    & 0.5411 & 0.3225  & 0.3341  & 0.5535  \\\hline
+            3    & 0.5411 & 0.3294  & 0.3528  & 0.5808  \\\hline
+            4    & 0.5411 & 0.3431  & 0.3650  & 0.5684  \\\hline
+            8    & 0.5411 & 0.3351  & 0.3316  & 0.5383  \\\hline
+            16   & 0.5411 & 0.3546  & 0.3274  & 0.5904  \\\hline
+        \end{tabular}%
+        }}
+        \label{tab:xeonco}
+        \caption{Intel Xeon}
+    \end{subtable}
+    \caption{Diretivas OpenMP, com otimizações}
+    \label{tab:co}
+\end{table}
+
+
+Os grafos dos tempos de execução podem ser observado nas figuras ~\ref{fig:corei5co} e ~\ref{fig:xeonco}. 
+
+\begin{figure} 
+    \centering
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[height=6cm]{Images/corei5co} 
+        \caption{Intel Core i5}
+        \label{fig:corei5co} 
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[height=6cm]{Images/xeonco} 
+        \caption{Intel Xeon}
+        \label{fig:xeonco} 
+    \end{subfigure}    
+    \caption{Diretivas OpenMP, com otimizações}
+    \label{fig:co}
+\end{figure} 
+
+
+TALK STH
+
+
+Para fazer uma melhor comparação entre os resultados observados nos tempos de execução dos códigos com otmizações de código apresentamos os grafos com um rango menor de tempo.
+
+\begin{figure} 
+    \centering
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[height=6cm]{Images/corei5cozoom} 
+        \caption{Intel Core i5}
+        \label{fig:corei5cozoom} 
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[height=6cm]{Images/xeoncozoom} 
+        \caption{Intel Xeon}
+        \label{fig:xeoncozoom} 
+    \end{subfigure}    
+    \caption{Diretivas OpenMP, com otimizações (Zoom)}
+    \label{fig:cozoom}
+\end{figure} 
+
+TALK STH
+
 \subsection{Conclusões} 
+
+TALK MORE
  
 \clearpage 
 \section{Conclusões} 
