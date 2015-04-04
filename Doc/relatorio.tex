@@ -7,6 +7,19 @@
 \usepackage{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[intlimits]{amsmath}
+
+% formato de codigo
+\usepackage{listings}
+\lstset{
+ 	breaklines=true,
+	basicstyle=\scriptsize,
+	language=C++,
+	numbers=left,
+	numbersep=-10pt,
+	stepnumber=1,
+	tabsize=2
+}
+
 %alguns macros
 \newcommand{\R}{\ensuremath{\mathbb{R}}}
 \newcommand{\Rn}{{\ensuremath{\mathbb{R}}}^{n}}
@@ -76,27 +89,95 @@ concorrência. As operações simples, como por exemplo a assinação de valores
 \end{itemize} 
  Para evitar os erros produzidos por o pouco cuidado do desenvolvedor e para maximizar o paralelismo dos algoritmos que são sequências existem conjuntos de diretivas que criam um código paralelo executável. OpenMP é um conjunto de diretivas para o compilar, rutinas de libraria e variáveis de entorno que podem ser usadas para a geração de paralelismo em códigos Fortran e C/C++ ~\cite{OpenMP13}. O objetivo é garantir o correto funcionamento dos programas e obter os benefícios do paralelismo. 
  
-Neste trabalho exploramos os problemas persistentes no uso das diretivas do OpenMP. Tanto no desenvolvimento de código errôneo, como na geração de overhead pela geração de áreas paralelas ineficientes. Para isso desenvolvemos experimentos para obter o tempo promédio na execução de códigos gerados a partir de distintas áreas paralelas, em ambientes diferentes e com distintas quantidades de threads.  
+Neste trabalho exploramos os problemas persistentes no uso das diretivas do OpenMP. Tanto no desenvolvimento de código errôneo, como na geração de overhead pela geração de áreas paralelas ineficientes. Para isso desenvolvemos experimentos para obter o tempo promédio na execução de códigos gerados a partir de distintas áreas paralelas, em ambientes diferentes e com distintas quantidades de threads. 
  
 \section{Exercício 1} 
 \textbf{Escolher um código na internet que use as diretivas de compilação do OpenMP, esse código deve ser procurado nos respetivos tutoriais e manuais desse padrão de programação multiprocessamento. A ideia e encontrar erros nessas implementações fornecidas ou apresentadas nos tutoriais consultados. Apresente o código, aponte os problemas e descreva quais são as correções feitas para tirar o erro da aplicação.} 
  
 \subsection{Código com erro} 
-Comando para preservar a formatação do texto. 
-\begin{verbatim} 
-INSERT CODE HERE 
-\end{verbatim} 
+	O seguinte programa foi extraído de ~\cite{Rogerio15} e tem como objetivo imprimir os valores de $A[ i ] = i * i$ no mesmo ordem da iteração, neste caso para os valores de $i$ a partir de 0 a 15.
+
+	\begin{lstlisting} 
+		#include <stdio.h>
+		#include <omp.h>
+		#define SIZE 16
+
+		int main(){
+			int A[ SIZE ] , i ;
+			#pragma omp parallel for schedule( static , 2 ) num_threads( 4 ) ordered
+			for( i = 0 ; i < SIZE ; i++){
+				A[ i ] = i * i ;
+				printf( "Th[ %d ]: %02d = %03d\n" , omp_get_thread_num() , i , A[ i ] ) ;
+			}
+			return 0 ;
+		}
+	\end{lstlisting}
+	
+	O resultado sería:
+	\begin{verbatim}
+		Th[ 0 ]: 00 = 000
+		Th[ 0 ]: 01 = 001
+		Th[ 1 ]: 02 = 004
+		Th[ 1 ]: 03 = 009
+		Th[ 2 ]: 04 = 016
+		Th[ 2 ]: 05 = 025
+		Th[ 3 ]: 06 = 036
+		Th[ 3 ]: 07 = 049
+		Th[ 0 ]: 08 = 064
+		Th[ 0 ]: 09 = 081
+		Th[ 1 ]: 10 = 100
+		Th[ 1 ]: 11 = 121
+		Th[ 2 ]: 12 = 144
+		Th[ 2 ]: 13 = 169
+		Th[ 3 ]: 14 = 196
+		Th[ 3 ]: 15 = 225
+	\end{verbatim}
  
-\subsection{Problemas encontrados} 
- 
+ \subsection{Problemas encontrados} 
+ 	O erro no programa anterior está em usar a \textbf{diretiva  ordered} sem colocar um \textbf{bloco ordered} dentro de for (linhas 9-10) ~\cite{Lawrence14}. Por isso que ao executar o programa, o resultado será similar a:
+	\begin{verbatim} 
+		Th[ 2 ]: 04 = 016
+		Th[ 0 ]: 00 = 000
+		Th[ 3 ]: 06 = 036
+		Th[ 1 ]: 02 = 004
+		Th[ 2 ]: 05 = 025
+		Th[ 0 ]: 01 = 001
+		Th[ 3 ]: 07 = 049
+		Th[ 1 ]: 03 = 009
+		Th[ 0 ]: 08 = 064
+		Th[ 1 ]: 10 = 100
+		Th[ 0 ]: 09 = 081
+		Th[ 2 ]: 12 = 144
+		Th[ 3 ]: 14 = 196
+		Th[ 1 ]: 11 = 121
+		Th[ 2 ]: 13 = 169
+		Th[ 3 ]: 15 = 225
+	\end{verbatim}
+
 \subsection{Correções} 
-Comando para preservar a formatação do texto. 
-\begin{verbatim} 
-INSERT CODE HERE 
-\end{verbatim} 
+	Para que o resultado do programa seja correcto deve ser adicionado o bloco ordered e neste caso só é necessário colocá-lo para a linha 10 porque você quer imprimir em ordem, mas também poderia ser colocado para as linhas 9 e 10.
+	\begin{lstlisting} 
+		#include <stdio.h>
+		#include <omp.h>
+		#define SIZE 16
+
+		int main(){
+			int A[ SIZE ] , i ;
+			#pragma omp parallel for schedule( static , 2 ) num_threads( 4 ) ordered
+			for( i = 0 ; i < SIZE ; i++){
+				A[ i ] = i * i ;
+				#pragma omp ordered
+				{
+					printf( "Th[ %d ]: %02d = %03d\n" , omp_get_thread_num() , i , A[ i ] ) ;
+				}
+			}
+			return 0 ;
+		}
+	\end{lstlisting}
  
 \subsection{Conclusões} 
- 
+	A diretiva ordered deve ser sempre usada com seu bloco ordered para que o compilador pode saber quais tarefas devem ser executadas em ordem, caso contrário, os resultados poderiam não ser corretos. Quando é bem utilizada, esta diretiva garante que só um thread por bloco ordered esté em execução enquanto os outros esperam ~\cite{Lawrence14}.
+
 \clearpage 
  \section{Exercício 2} 
 \label{sec:tab} 
