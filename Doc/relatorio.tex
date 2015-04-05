@@ -7,6 +7,7 @@
 \usepackage{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[intlimits]{amsmath}
+\usepackage{multicol}
 
 % formato de codigo
 \usepackage{listings}
@@ -17,7 +18,8 @@
 	numbers=left,
 	numbersep=-10pt,
 	stepnumber=1,
-	tabsize=2
+	tabsize=2,
+	showstringspaces=false
 }
 
 %alguns macros
@@ -114,45 +116,49 @@ Neste trabalho exploramos os problemas persistentes no uso das diretivas do Open
 	\end{lstlisting}
 	
 	O resultado sería:
-	\begin{verbatim}
-		Th[ 0 ]: 00 = 000
-		Th[ 0 ]: 01 = 001
-		Th[ 1 ]: 02 = 004
-		Th[ 1 ]: 03 = 009
-		Th[ 2 ]: 04 = 016
-		Th[ 2 ]: 05 = 025
-		Th[ 3 ]: 06 = 036
-		Th[ 3 ]: 07 = 049
-		Th[ 0 ]: 08 = 064
-		Th[ 0 ]: 09 = 081
-		Th[ 1 ]: 10 = 100
-		Th[ 1 ]: 11 = 121
-		Th[ 2 ]: 12 = 144
-		Th[ 2 ]: 13 = 169
-		Th[ 3 ]: 14 = 196
-		Th[ 3 ]: 15 = 225
-	\end{verbatim}
+	\begin{multicols}{3}
+		\begin{verbatim}
+			Th[ 0 ]: 00 = 000
+			Th[ 0 ]: 01 = 001
+			Th[ 1 ]: 02 = 004
+			Th[ 1 ]: 03 = 009
+			Th[ 2 ]: 04 = 016
+			Th[ 2 ]: 05 = 025
+			Th[ 3 ]: 06 = 036
+			Th[ 3 ]: 07 = 049
+			Th[ 0 ]: 08 = 064
+			Th[ 0 ]: 09 = 081
+			Th[ 1 ]: 10 = 100
+			Th[ 1 ]: 11 = 121
+			Th[ 2 ]: 12 = 144
+			Th[ 2 ]: 13 = 169
+			Th[ 3 ]: 14 = 196
+			Th[ 3 ]: 15 = 225
+		\end{verbatim}
+	\end{multicols}
  
  \subsection{Problemas encontrados} 
  	O erro no programa anterior está em usar a \textbf{diretiva  ordered} sem colocar um \textbf{bloco ordered} dentro de for (linhas 9-10) ~\cite{Lawrence14}. Por isso que ao executar o programa, o resultado será similar a:
-	\begin{verbatim} 
-		Th[ 2 ]: 04 = 016
-		Th[ 0 ]: 00 = 000
-		Th[ 3 ]: 06 = 036
-		Th[ 1 ]: 02 = 004
-		Th[ 2 ]: 05 = 025
-		Th[ 0 ]: 01 = 001
-		Th[ 3 ]: 07 = 049
-		Th[ 1 ]: 03 = 009
-		Th[ 0 ]: 08 = 064
-		Th[ 1 ]: 10 = 100
-		Th[ 0 ]: 09 = 081
-		Th[ 2 ]: 12 = 144
-		Th[ 3 ]: 14 = 196
-		Th[ 1 ]: 11 = 121
-		Th[ 2 ]: 13 = 169
-		Th[ 3 ]: 15 = 225
-	\end{verbatim}
+	\begin{multicols}{3}
+		\begin{verbatim} 
+			Th[ 2 ]: 04 = 016
+			Th[ 0 ]: 00 = 000
+			Th[ 3 ]: 06 = 036
+			Th[ 1 ]: 02 = 004
+			Th[ 2 ]: 05 = 025
+			Th[ 0 ]: 01 = 001
+			Th[ 3 ]: 07 = 049
+			Th[ 1 ]: 03 = 009
+			Th[ 0 ]: 08 = 064
+			Th[ 1 ]: 10 = 100
+			Th[ 0 ]: 09 = 081
+			Th[ 2 ]: 12 = 144
+			Th[ 3 ]: 14 = 196
+			Th[ 1 ]: 11 = 121
+			Th[ 2 ]: 13 = 169
+			Th[ 3 ]: 15 = 225
+		\end{verbatim}
+	\end{multicols}
 
 \subsection{Correções} 
 	Para que o resultado do programa seja correcto deve ser adicionado o bloco ordered e neste caso só é necessário colocá-lo para a linha 10 porque você quer imprimir em ordem, mas também poderia ser colocado para as linhas 9 e 10.
@@ -374,7 +380,7 @@ Nossas conclusões finais são:
     \item É muito importante que se tenha em consideração o modo em que a memoria é accesada para garantir o melhor tempo de execução.
     \item Para evitar o overhead, a carga de cada um dos threads debe ser consideravel. Quando em dúvida, o laço exterior é a melhor opção. 
     \item Para a escolha do número de threads é importante conhecer a arquitetura no qual será executado o programa. Quando esta informação não é conhecida, a melhor opção é assumir que o tempo não será o ótimo.
-    \item Na uso das diretivas OpenMP é importante AQUI LLENATUCONSLUSION!!!!!!!!!!!!!!!!!!!!
+    \item Na uso das diretivas OpenMP é importante conhecer tudo o que deve colocá-se no código (como o caso de ordered) para obter os resultados corretos.
 \end{itemize}
  
 \clearpage 
